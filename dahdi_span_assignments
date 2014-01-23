@@ -301,13 +301,20 @@ assign_devices() {
 }
 
 auto_assign_devices() {
+
+	# Run in parallel so that registration order is the span order by
+	# default.
+
 	for device in $DEVICES
 	do
-		echo "auto-assign $device"
+		(
 		if [ "$dry_run" != true ]; then
 			echo 1 > "$device/auto_assign"
 		fi
+		echo "auto-assign $device"
+		) & 
 	done
+	wait
 }
 
 case "$action" in
