@@ -32,6 +32,8 @@ ifneq (,$(INITRD_DIR))
   COPY_INITD	:= install -D dahdi.init $(INIT_TARGET)
 endif
 
+MODULES_FILE	= /etc/dahdi/modules
+
 NETSCR_DIR	:= $(firstword $(wildcard $(DESTDIR)/etc/sysconfig/network-scripts ))
 ifneq (,$(NETSCR_DIR))
   NETSCR_TARGET	:= $(NETSCR_DIR)/ifup-hdlc
@@ -102,6 +104,9 @@ endif
 config:
 ifneq (,$(COPY_INITD))
 	$(COPY_INITD)
+endif
+ifeq (,$(wildcard $(DESTDIR)$(MODULES_FILE)))
+	$(INSTALL) -D -m 644 modules.sample $(DESTDIR)$(MODULES_FILE)
 endif
 ifneq (,$(COPY_NETSCR))
 	$(COPY_NETSCR)
