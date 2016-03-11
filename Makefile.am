@@ -195,3 +195,4 @@ EXTRA_DIST	= \
 	#
 
 .PHONY: docs config
+config: install-config
